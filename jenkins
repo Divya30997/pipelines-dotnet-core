@@ -1,36 +1,33 @@
-pipeline{
+pipeline {
 agent any
 environment {
 dotnet = 'path\\to\\dotnet.exe'
 }
-stages{
-stage('checkout')
-{
-steps{
-git url:'https://github.com/Divya30997/pipelines-dotnet-core/new/master',branch:'master'
+stages {
+stage ('Checkout') {
+            steps {
+                 git url: 'https://github.com/Divya30997/pipelines-dotnet-core',branch: 'master'
+            }
 }
-}
-stage ('Restore')
-{
-steps{
-bat "dotnet restore"
-}
-}
-stage ('Build')
-{
-steps 
-{
-   bat 'dotnet build --configuration Release'
+stage ('Restore PACKAGES') {     
+         steps {
+             bat "dotnet restore"
+          }
+        }
+
+stage('Build') {
+     steps {
+            bat 'dotnet build --configuration Release'
+      }
    }
+   stage('Publish') {
+     steps {
+           bat 'dotnet publish pipelines-dotnet-core.csproj -c Release'
+      }
    }
+
    
-   stage ('publish')
-{
-steps 
-{
-   bat 'dotnet publish --configuration Release'
-   }
-   }
-   
+ }
+}
 
 
